@@ -36,7 +36,7 @@ public class GameJava2_12 extends Applet
 
     myPanel= new Panel();
     name= new TextField(8);
-    name.setText("´ëÈ­¸í");
+    name.setText("ëŒ€í™”ëª…");
     myPanel.add(name);
     input= new TextField(40);
     input.addActionListener(this);
@@ -55,7 +55,7 @@ public class GameJava2_12 extends Applet
   public void run()
   {
     out.println("LOGIN|"+ mySocket);
-    memo.append("[Á¢¼Ó] "+ getCodeBase().toString() +"\n");
+    memo.append("[ì ‘ì†] "+ getCodeBase().toString() +"\n");
 
     try{
       while(true){
