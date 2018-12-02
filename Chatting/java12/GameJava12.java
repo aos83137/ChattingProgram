@@ -51,6 +51,7 @@ implements ActionListener, Runnable
 		setLayout(new BorderLayout());
 		label = new Label("접속 명단");
 		label.setBackground(Color.GRAY);
+		label.setAlignment(Label.CENTER);
 		list = new TextField(60);
 		NorthPanel = new Panel();
 		NorthPanel.add(label);
@@ -59,11 +60,30 @@ implements ActionListener, Runnable
 		memo = new TextArea(10,55);
 		add("Center",memo);
 		myPanel =  new Panel();
-//		name =new TextField(8);
+		name =new TextField(8);
+		name.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == name) {
+					String data = name.getText();
+					out.println("NAME|"+data);
+					out.flush();
+				}
+			}
+		});
 //		name.setText("대화명");
-//		myPanel.add(name);
+		myPanel.add(name);
 		input = new TextField(40);
-		input.addActionListener(this);
+		input.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == input) {
+					String data = input.getText();
+					input.setText("");
+								
+					out.println("TALK|"+data); //추가
+					out.flush();
+				}
+			}
+		});
 		myPanel.add(input);
 		add("South", myPanel);
 		}
@@ -91,6 +111,8 @@ implements ActionListener, Runnable
 						memo.append(text + "\n");
 					}else if(command.equals("LIST")) {
 						list.setText(text);
+					}else if(command.equals("NAME")) {
+						name.setText(text);
 					}
 				}
 			}
@@ -100,19 +122,19 @@ implements ActionListener, Runnable
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == input) {
-			String data = input.getText();
-			input.setText("");
-						
-			out.println("TALK|"+data); //추가
-			out.flush();
-		}
+//		if(e.getSource() == input) {
+//			String data = input.getText();
+//			input.setText("");
+//						
+//			out.println("TALK|"+data); //추가
+//			out.flush();
+//		}
 	}
 	public void destroy() {
 		if(clock !=null &&clock.isAlive()) {
 			clock=null;
 		}
-		out.println("LOGOUT|" + name.getText());
+		out.println("LOGOUT|asd");
 		out.flush();
 		
 		try {

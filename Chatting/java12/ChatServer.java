@@ -26,12 +26,23 @@ public class ChatServer {
 	}
 	//
 	
+	public void listBroadcast(String msg) throws IOException{
+		synchronized(clientVector){
+			for(int i=0;i<clientVector.size();i++) {
+				ChatThread client = (ChatThread) clientVector.elementAt(i);
+				synchronized(client) {
+					client.sendMessage("LIST|"+msg);
+				}
+			}
+		}
+	}
+	
 	public void broadcast(String msg) throws IOException{
 		synchronized(clientVector){
 			for(int i=0;i<clientVector.size();i++) {
 				ChatThread client = (ChatThread) clientVector.elementAt(i);
 				synchronized(client) {
-					client.sendMessage(msg);
+					client.sendMessage("TALK|"+msg);
 				}
 			}
 		}
@@ -40,9 +51,9 @@ public class ChatServer {
 	public void removeClient(ChatThread client)
 	{
 		synchronized(clientVector) {
-			userSort();	 // 추가
 			clientVector.removeElement(client);
 			client = null;
+			userSort();	 // 추가
 			System.gc();
 		}
 	}
@@ -73,7 +84,7 @@ public class ChatServer {
 				client.start();
 				myServer.addClient(client);
 				
-				System.out.println("Test\n" + myServer.userList);  // test용
+//				System.out.println("Test\n" + myServer.userList);  // test용
 				
 				myServer.clientNum++;
 				System.out.println("현재 접속자수 " + myServer.clientNum + "명"); 

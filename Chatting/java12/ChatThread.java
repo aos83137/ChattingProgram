@@ -29,11 +29,22 @@ public class ChatThread extends Thread {
 		out=null;
 		in =null;
 		
+//		try {
+//			sendName(userName);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 	public void sendMessage(String msg) throws IOException{
 		out.println(msg);
 		out.flush();
+	}
+	
+	public void sendName(String msg) throws IOException 
+	{ 
+		sendMessage("NAME|"+msg);
 	}
 	
 	public void disconnect() {
@@ -43,6 +54,7 @@ public class ChatThread extends Thread {
 			out.close();
 			mySocket.close();
 			myServer.removeClient(this);
+			myServer.listBroadcast(myServer.userList); // 추가
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -77,8 +89,9 @@ public class ChatThread extends Thread {
 		if(command.equals("LOGIN")) {
 			System.out.println("접속 " + mySocket);
 			try {
-				myServer.broadcast("LIST|" + myServer.userList); // 추가
-				myServer.broadcast("TALK|"+"현재 접속자수 " + myServer.clientNum + "명"); //추가
+				myServer.listBroadcast(myServer.userList); // 추가
+				myServer.broadcast("현재 접속자수 " + myServer.clientNum + "명");
+				sendName(userName);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -87,36 +100,34 @@ public class ChatThread extends Thread {
 		}else if (command.equals("LOGOUT")) {
 			try {
 				myServer.clientNum--;
-				myServer.broadcast("LIST|" + myServer.userList); // 추가
-				myServer.broadcast("TALK|"+"접속종료  - "+userName); //추가
-				myServer.broadcast("TALK|"+"현재 접속자수 " + myServer.clientNum +"명"); //추가
+				myServer.broadcast("접속종료  - "+userName); 
+				myServer.broadcast("현재 접속자수 " + myServer.clientNum +"명"); 
 			}catch(IOException e) {
 				System.out.println(e.toString());
 			}
 			disconnect();
 		}else if(command.equals("TALK")) {
 			try {
-				myServer.broadcast("TALK|"+userName+" : "+talk); //추가
+				myServer.broadcast(userName+" : "+talk);
 			}catch(IOException e) {
 				System.out.println(e.toString());
 			}
 		}else if(command.equals("NAME")) {
-			if(!talk.equals("")&&!talk.equals(null)) {
-				try {
-					sendMessage(userName +" -> "+talk +"변경완료");
+			try {
+					myServer.broadcast("대화명변경 "+userName +" -> "+talk +" 변경");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println(e.toString());					
 				}
+
 				userName = talk;
-			}else {
 				try {
-					sendMessage("/name 바꿀대화명");
+					myServer.userSort();
+					myServer.listBroadcast(myServer.userList);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-			}
+				} // 추가
+			
 		}
 	}
 }
