@@ -2,6 +2,7 @@ package java12;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.Calendar;
 import java.util.Vector;
 
 public class ChatServer {
@@ -11,6 +12,26 @@ public class ChatServer {
 	
 	// 추가
 	String userList = "";
+	//
+	
+	//시간 표시용 클래스
+	class ChatTime{
+       Calendar now = Calendar.getInstance();
+       int hour = now.get(Calendar.HOUR);
+       int minute= now.get(Calendar.MINUTE);
+       int amPm= now.get(Calendar.AM_PM);
+
+       public String getTime() {
+           String strAmPm = null;
+           if(amPm == Calendar.AM) 
+        	   strAmPm = "AM";
+           else 
+        	   strAmPm = "PM";
+         
+    	   return ("["+strAmPm+" "+hour+":"+minute+"] ");
+        }
+     }
+    //
 	
 	
 	public void userSort() {
@@ -38,12 +59,12 @@ public class ChatServer {
 	}
 	
 	public void broadcast(String msg) throws IOException{
+		ChatTime time = new ChatTime();
 		synchronized(clientVector){
 			for(int i=0;i<clientVector.size();i++) {
 				ChatThread client = (ChatThread) clientVector.elementAt(i);
 				synchronized(client) {
-					client.sendMessage("TALK|"+msg);
-				}
+					client.sendMessage("TALK|"+time.getTime()+msg);				}
 			}
 		}
 	}

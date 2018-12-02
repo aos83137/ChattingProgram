@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Random;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 public class ChatThread extends Thread {
@@ -83,13 +83,15 @@ public class ChatThread extends Thread {
 	public void messageProcess(String msg) {
 		System.out.println(msg);
 		StringTokenizer st = new StringTokenizer(msg, "|");
+		try{
 		String command =st.nextToken();
 		String talk = st.nextToken();
-		
+	
 		if(command.equals("LOGIN")) {
 			System.out.println("접속 " + mySocket);
 			try {
 				myServer.listBroadcast(myServer.userList); // 추가
+				myServer.broadcast("접속 : " + userName);
 				myServer.broadcast("현재 접속자수 " + myServer.clientNum + "명");
 				sendName(userName);
 			} catch (IOException e) {
@@ -114,7 +116,7 @@ public class ChatThread extends Thread {
 			}
 		}else if(command.equals("NAME")) {
 			try {
-					myServer.broadcast("대화명변경 "+userName +" -> "+talk +" 변경");
+					myServer.broadcast("대화명변경 : "+userName +" -> "+talk +" 변경");
 				} catch (IOException e) {
 					System.out.println(e.toString());					
 				}
@@ -127,7 +129,9 @@ public class ChatThread extends Thread {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} // 추가
-			
+			}
+		}catch(NoSuchElementException e){
+			System.out.println(e.toString());
 		}
 	}
 }
