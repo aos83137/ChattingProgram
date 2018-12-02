@@ -4,7 +4,7 @@ import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GameJava2_12 extends Applet
+public class GameJava12 extends Applet
   implements ActionListener, Runnable
 {
   Socket mySocket= null;
@@ -36,7 +36,7 @@ public class GameJava2_12 extends Applet
 
     myPanel= new Panel();
     name= new TextField(8);
-    name.setText("´ëÈ­¸í");
+    name.setText("Â´Ã«ÃˆÂ­Â¸Ã­");
     myPanel.add(name);
     input= new TextField(40);
     input.addActionListener(this);
@@ -55,7 +55,7 @@ public class GameJava2_12 extends Applet
   public void run()
   {
     out.println("LOGIN|"+ mySocket);
-    memo.append("[Á¢¼Ó] "+ getCodeBase().toString() +"\n");
+    memo.append("[ÃÂ¢Â¼Ã“] "+ getCodeBase().toString() +"\n");
 
     try{
       while(true){
