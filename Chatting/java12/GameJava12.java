@@ -43,13 +43,13 @@ implements ActionListener, Runnable,ItemListener
 	Panel myPanel;
 	
 	
-	//Ãß°¡
+	//ì¶”ê°€
 	Choice myChoice;
     Image myImage;
     String change;
     URL url1;
     AudioClip talkAudio;
-	//½Ã°£ Ç¥½Ã¿ë Å¬·¡½º
+	//ì‹œê°„ í‘œì‹œìš© í´ë˜ìŠ¤
     class ChatTime{
        Calendar now = Calendar.getInstance();
        int hour = now.get(Calendar.HOUR);
@@ -57,7 +57,7 @@ implements ActionListener, Runnable,ItemListener
        int seconds= now.get(Calendar.SECOND);
      
        public String getTime() {
-       return ("		["+hour+"½Ã"+minute+"ºĞ"+seconds+"ÃÊ]");
+       return ("		["+hour+"ì‹œ"+minute+"ë¶„"+seconds+"ì´ˆ]");
         }
      }
     //
@@ -88,14 +88,13 @@ implements ActionListener, Runnable,ItemListener
 		//
         myChoice=new Choice();
         myChoice.addItem("^_^");
-        myChoice.addItem("^¿À^");
-        myChoice.addItem("¤·¤µ¤·");
-        myChoice.addItem("¢½");
+        myChoice.addItem("ã…‡ã……ã…‡");
+        myChoice.addItem("â™¡");
         myChoice.addItemListener(this);
 
 		//
 		
-		label = new Label("Á¢¼Ó ¸í´Ü");
+		label = new Label("ì ‘ì† ëª…ë‹¨");
 		label.setBackground(Color.GRAY);
 		label.setAlignment(Label.CENTER);
 		list = new TextField(60);
@@ -115,17 +114,14 @@ implements ActionListener, Runnable,ItemListener
 				}
 			}
 		});
-//		name.setText("´ëÈ­¸í");
+//		name.setText("ëŒ€í™”ëª…");
 		myPanel.add(name);
 		input = new TextField(40);
 		input.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == input) {
 					
-//		            String[] fuck = {"±èÁ¾À²"};//Ãß°¡
 					String data = input.getText();
-//					for(int i=0;i<fuck.length;i++)
-//					data = change.replaceAll(fuck[i],"±³¼ö´Ô »ç¶ûÇÕ´Ï´Ù..");
 					input.setText("");
 								
 					out.println("TALK|"+data); 
@@ -134,7 +130,7 @@ implements ActionListener, Runnable,ItemListener
 			}
 		});
 		myPanel.add(input);
-        myPanel.add(myChoice);//ÃÊÀÌ½º Ãß°¡
+        myPanel.add(myChoice);//ì´ˆì´ìŠ¤ ì¶”ê°€
 		add("South", myPanel);
 		}
 	
@@ -146,13 +142,13 @@ implements ActionListener, Runnable,ItemListener
 	}
 	public void run() {
 		out.println("LOGIN|" +mySocket);
-		memo.append("Á¢¼Ó " + getCodeBase().toString() + "\n");
+		memo.append("ì ‘ì† " + getCodeBase().toString() + "\n");
 		
 		try {
 			while(true) {
 				String msg = in.readLine();
 
-				StringTokenizer st =null;//Ãß°¡	
+				StringTokenizer st =null;//ì¶”ê°€	
 				if(!msg.equals("") && !msg.equals(null)) {
 					st = new StringTokenizer(msg, "|");
 					String command = st.nextToken();
@@ -175,7 +171,7 @@ implements ActionListener, Runnable,ItemListener
 	public void actionPerformed(ActionEvent e) {
 
 	}
-	//¾ÆÀÌÅÛÇîµé·¯ Ãß°¡
+	//ì•„ì´í…œí—¨ë“¤ëŸ¬ ì¶”ê°€
 	 public void itemStateChanged(ItemEvent e) {
          // TODO Auto-generated method stub
          if(e.getSource()==myChoice) {
